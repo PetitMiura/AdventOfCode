@@ -1,28 +1,40 @@
-numbers = ['one', 'two', 'three','four','five', 'six', 'seven', 'eight', 'nine']
+def sum_all_v2(filename):
+    # Mapeo de palabras a dígitos
+    word_to_digit = {
+        'one': '1', 'two': '2', 'three': '3', 'four': '4', 'five': '5', 
+        'six': '6', 'seven': '7', 'eight': '8', 'nine': '9'
+    }
 
-def sum_all(filename):
+    # Función para encontrar el primer dígito (número o palabra)
+    def find_first_digit(line):
+        for i, char in enumerate(line):
+            if char.isdigit():
+                return char
+            for word, digit in word_to_digit.items():
+                if line[i:].startswith(word):
+                    return digit
+        return None
+
+    # Función para encontrar el último dígito (número o palabra)
+    def find_last_digit(line):
+        for i in range(len(line) - 1, -1, -1):
+            if line[i].isdigit():
+                return line[i]
+            for word, digit in word_to_digit.items():
+                if line[i-len(word)+1:i+1] == word:
+                    return digit
+        return None
+
+    # Calcula la suma total de todos los valores de calibración
     with open(filename, 'r') as file:
         total_sum = 0
-
         for line in file:
             line = line.strip()
-            if line:
-                # Encuentra el primer dígito
-                first_digit = next((char for char in line if char.isdigit()), None)
-                # Encuentra la primera palabra en numbers
-                first_num = next((char for char in line if char in numbers), None)
-                # Encuentra el último dígito
-                last_digit = next((char for char in reversed(line) if char.isdigit()), None)
-                # Encuentra la ultima palabra en numbers
-                last_num = next((char for char in reversed(line) if char in numbers), None)
-
-
-
-                if first_digit is not None and last_digit is not None:
-                    new_number = first_digit + last_digit
-                    total_sum += int(new_number)
-        
+            first_digit = find_first_digit(line)
+            last_digit = find_last_digit(line)
+            if first_digit and last_digit:
+                total_sum += int(first_digit + last_digit)
+                print(first_digit + last_digit)
         return total_sum
-
-result = sum_all('dataDay1.txt')
+result = sum_all_v2('dataDay1.txt')
 print(result)
