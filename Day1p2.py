@@ -34,7 +34,6 @@ def sum_all_v2(filename):
             last_digit = find_last_digit(line)
             if first_digit and last_digit:
                 total_sum += int(first_digit + last_digit)
-                print(first_digit + last_digit)
         return total_sum
 result = sum_all_v2('dataDay1.txt')
 print(result)
